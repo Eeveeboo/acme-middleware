@@ -4,11 +4,15 @@ import tls from "tls";
 import { CertPath } from './AcmeExpress';
 import { loadCert } from './certificate/loadCert';
 import { checkDefaultCert } from './certificate/defaultCert';
+import fs from "fs";
 
 
 export default function createSSLServer(app: any, cert: CertPath, production: boolean, challengePath:string) {
 
     checkDefaultCert(cert.localCertPath, cert.localKeyPath);
+
+    cert.localCertPath = <any>fs.readFileSync(cert.localCertPath);
+    cert.localKeyPath = <any>fs.readFileSync(cert.localKeyPath);
 
     const server = https.createServer({
         SNICallback: (servername, cb) => {
@@ -26,6 +30,7 @@ export default function createSSLServer(app: any, cert: CertPath, production: bo
                     cb(null, ctx)
                 })
                 .catch(err => {
+                    console.error(err);
                     cb(null, tls.createSecureContext({
                         cert: cert.localCertPath,
                         key: cert.localKeyPath
