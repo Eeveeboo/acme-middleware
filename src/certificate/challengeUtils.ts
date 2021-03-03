@@ -1,12 +1,12 @@
 import fs from "fs";
 import getAcmePath from "../pathUtils";
 
-export function createChallenge(clientToken: string, accountToken: string) {
-    fs.writeFileSync(getAcmePath(`acme-challenge`, clientToken), `${accountToken}`);
+export function createChallenge(challengePath:string, clientToken: string, accountToken: string) {
+    fs.writeFileSync(getAcmePath(challengePath, `acme-challenge`, clientToken), `${accountToken}`);
 }
 
-export function removeChallenge(clientToken: string) {
+export function removeChallenge(challengePath:string, clientToken: string) {
 
-    fs.unlinkSync(getAcmePath(`acme-challenge`, clientToken));
+    fs.unlinkSync(getAcmePath(challengePath, `acme-challenge`, clientToken));
 
 }

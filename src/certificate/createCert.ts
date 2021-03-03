@@ -8,14 +8,14 @@ import { getFutureDate } from "../store/utils";
 import { Challenge } from "acme-client/types/rfc8555";
 
 
-type Props = { production:boolean, domain: string, altNames?: string[], email?: string, challengeOnly?: boolean };
+type Props = { challengePath:string, production:boolean, domain: string, altNames?: string[], email?: string, challengeOnly?: boolean };
 
 export default async function createCert(opts: Props) {
 
   let { domain, altNames, challengeOnly } = opts;
   let email = opts.email || "sample@notrealdomain.com";
 
-  const client = await getClient(opts.production, email);
+  const client = await getClient(opts.challengePath, opts.production, email);
 
   let identifiers = [{ type: 'dns', value: domain }];
 
@@ -107,8 +107,8 @@ export default async function createCert(opts: Props) {
   await client.finalizeOrder(order, csr);
   const cert = await client.getCertificate(order);
 
-  await certificate.save(domain, `key.pem`, key);
-  await certificate.save(domain, `cert.pem`, cert);
+  await certificate.save(opts.challengePath, domain, `key.pem`, key);
+  await certificate.save(opts.challengePath, domain, `cert.pem`, cert);
 
-  await CertStore.getStore().insert(domain, getFutureDate(90).getTime());
+  await CertStore.getStore(opts.challengePath).insert(domain, getFutureDate(90).getTime());
 }

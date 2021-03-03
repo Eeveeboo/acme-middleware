@@ -3,13 +3,16 @@ import getAcmePath from "../pathUtils";
 import { CertificateStore } from "./types";
 import { FsCertStore } from "./fs-store-driver";
 
-let _certStore: CertificateStore = new FsCertStore({
-    path: getAcmePath("certStore")
- });
+var _certStore: CertificateStore|null = null;
 
 const CertStore = {
     
-    getStore: () => {
+    getStore: (challengePath:string) => {
+        if(!_certStore){
+            _certStore = new FsCertStore({
+                path: getAcmePath(challengePath, "certStore")
+            });
+        }
        return _certStore;
     },
 

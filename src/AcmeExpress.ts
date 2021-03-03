@@ -33,8 +33,8 @@ export class AcmeExpress {
         production?: boolean
     }) {
         this.app = props.app;
-        this.https = createSSLServer(props.app, props.cert, props.production || false);
-        this.challengePath = props.challengePath || "acme-middleware";
+        this.https = createSSLServer(props.app, props.cert, props.production || false, props.challengePath || ".acme-middleware");
+        this.challengePath = props.challengePath || ".acme-middleware";
         this.redirectHTTP = props.redirectHTTP || false;
 
         props.store && (CertStore.setStore(props.store));

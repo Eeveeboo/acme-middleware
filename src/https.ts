@@ -6,7 +6,7 @@ import { loadCert } from './certificate/loadCert';
 import { checkDefaultCert } from './certificate/defaultCert';
 
 
-export default function createSSLServer(app: any, cert: CertPath, production: boolean) {
+export default function createSSLServer(app: any, cert: CertPath, production: boolean, challengePath:string) {
 
     checkDefaultCert(cert.localCertPath, cert.localKeyPath);
 
@@ -21,7 +21,7 @@ export default function createSSLServer(app: any, cert: CertPath, production: bo
                 return;
             }
 
-            loadCert(servername, production)
+            loadCert(challengePath, servername, production)
                 .then(ctx => {
                     cb(null, ctx)
                 })

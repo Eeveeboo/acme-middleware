@@ -3,22 +3,23 @@ import certificate from "../certificate/certificate";
 import createCert from "../certificate/createCert";
 
 
-export async function createCertWithWildcardHandler(req: Request, res: Response, production: boolean) {
+export async function createCertWithWildcardHandler(req: Request, res: Response, production: boolean, challengePath: string) {
 
     let domain = req.query.domain as string || req.hostname;
-    const exists = certificate.exists(domain, `key.pem`);
+    const exists = certificate.exists(challengePath, domain, `key.pem`);
     
     if (!exists || req.query.force === "true") {
 
         if (exists) {
-            await certificate.remove(domain);
+            await certificate.remove(challengePath, domain);
         }
 
        let challenges = await createCert({ 
            domain, 
            altNames: [`*.${domain}`], 
            challengeOnly: !req.query.process,
-           production
+           production,
+           challengePath
         });
 
         challenges ? res.status(200).json({

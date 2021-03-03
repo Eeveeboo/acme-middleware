@@ -5,13 +5,13 @@ import getAcmePath from "../pathUtils";
 
 let accountKey: string  | undefined;
 
-async function getOrCreateKey() {
+async function getOrCreateKey(challengePath:string) {
 
     if (accountKey) {
         return Promise.resolve(accountKey);
     }
 
-    const keyPath = getAcmePath("accountKey.pem");
+    const keyPath = getAcmePath(challengePath, "accountKey.pem");
 
     if (!fs.existsSync(keyPath)) {
         let strBuff = await acme.forge.createPrivateKey();
@@ -24,9 +24,9 @@ async function getOrCreateKey() {
     return accountKey;
 }
 
-export async function getClient(production:boolean, email: string) {
+export async function getClient(challengePath:string, production:boolean, email: string) {
 
-    const accountKey = await getOrCreateKey()
+    const accountKey = await getOrCreateKey(challengePath)
 
     /* Init client */
     const client = new acme.Client({
