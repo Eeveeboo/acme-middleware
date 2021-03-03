@@ -13,9 +13,6 @@ export default function createSSLServer(app: any, cert: CertPath, production: bo
 
     checkDefaultCert(cert.localCertPath, cert.localKeyPath);
 
-    cert.localCertPath = <any>fs.readFileSync(cert.localCertPath, "utf8");
-    cert.localKeyPath = <any>fs.readFileSync(cert.localKeyPath, 'utf8');
-
     const server = https.createServer({
         SNICallback: (servername, cb) => {
 

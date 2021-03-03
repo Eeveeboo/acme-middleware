@@ -22,7 +22,7 @@ export async function checkDefaultCert(certhPath: string, keyPath: string) {
             altNames: ['localhost']
         });
 
-        fs.writeFileSync("./generatedPrivateKey.pem", privateKey);
+        //fs.writeFileSync("./generatedPrivateKey.pem", privateKey);
         fs.writeFileSync(certhPath, certificateKey);
         fs.writeFileSync(keyPath, publicKey);
     }

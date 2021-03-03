@@ -31,7 +31,7 @@ function checkDefaultCert(certhPath, keyPath) {
                 commonName: 'localhost',
                 altNames: ['localhost']
             });
-            fs_1.default.writeFileSync("./generatedPrivateKey.pem", privateKey);
+            //fs.writeFileSync("./generatedPrivateKey.pem", privateKey);
             fs_1.default.writeFileSync(certhPath, certificateKey);
             fs_1.default.writeFileSync(keyPath, publicKey);
         }
