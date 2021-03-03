@@ -6,7 +6,7 @@ import mkdirp from 'mkdirp';
 export async function checkDefaultCert(certhPath: string, keyPath: string) {
 
     if (!fs.existsSync(certhPath) || !fs.existsSync(keyPath)) {
-
+        console.log("Generating Default Keys...", certhPath, keyPath);
         mkdirp.sync(path.dirname(certhPath));
         mkdirp.sync(path.dirname(keyPath));
 

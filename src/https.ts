@@ -19,10 +19,10 @@ export default function createSSLServer(app: any, cert: CertPath, production: bo
             if (servername === "localhost" || 
             (firstDomainNameOnly && firstDomainName && firstDomainName != servername) || 
             (domainnames && domainnames.indexOf(servername) == -1)) {
-                cb(null, tls.createSecureContext({
-                    cert: cert.localCertPath,
-                    key: cert.localKeyPath
-                }))
+                try{cb(null, tls.createSecureContext({
+                        cert: cert.localCertPath,
+                        key: cert.localKeyPath
+                    }))}catch(e){console.error(e)}
                 return;
             }
 
@@ -33,10 +33,10 @@ export default function createSSLServer(app: any, cert: CertPath, production: bo
                 })
                 .catch(err => {
                     console.error(err);
-                    cb(null, tls.createSecureContext({
+                    try{cb(null, tls.createSecureContext({
                         cert: cert.localCertPath,
                         key: cert.localKeyPath
-                    }))
+                    }))}catch(e){console.error(e)}
                 })
         },
         sessionTimeout: 15000

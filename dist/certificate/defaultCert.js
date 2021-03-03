@@ -20,6 +20,7 @@ const mkdirp_1 = __importDefault(require("mkdirp"));
 function checkDefaultCert(certhPath, keyPath) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!fs_1.default.existsSync(certhPath) || !fs_1.default.existsSync(keyPath)) {
+            console.log("Generating Default Keys...", certhPath, keyPath);
             mkdirp_1.default.sync(path_1.default.dirname(certhPath));
             mkdirp_1.default.sync(path_1.default.dirname(keyPath));
             // generate an RSA key pair synchronously

@@ -15,10 +15,15 @@ function createSSLServer(app, cert, production, challengePath, firstDomainNameOn
             if (servername === "localhost" ||
                 (firstDomainNameOnly && firstDomainName && firstDomainName != servername) ||
                 (domainnames && domainnames.indexOf(servername) == -1)) {
-                cb(null, tls_1.default.createSecureContext({
-                    cert: cert.localCertPath,
-                    key: cert.localKeyPath
-                }));
+                try {
+                    cb(null, tls_1.default.createSecureContext({
+                        cert: cert.localCertPath,
+                        key: cert.localKeyPath
+                    }));
+                }
+                catch (e) {
+                    console.error(e);
+                }
                 return;
             }
             loadCert_1.loadCert(challengePath, servername, production)
@@ -28,10 +33,15 @@ function createSSLServer(app, cert, production, challengePath, firstDomainNameOn
             })
                 .catch(err => {
                 console.error(err);
-                cb(null, tls_1.default.createSecureContext({
-                    cert: cert.localCertPath,
-                    key: cert.localKeyPath
-                }));
+                try {
+                    cb(null, tls_1.default.createSecureContext({
+                        cert: cert.localCertPath,
+                        key: cert.localKeyPath
+                    }));
+                }
+                catch (e) {
+                    console.error(e);
+                }
             });
         },
         sessionTimeout: 15000
