@@ -1,5 +1,6 @@
 import { Challenge } from "acme-client/types/rfc8555";
 declare type Props = {
+    challengePath: string;
     production: boolean;
     domain: string;
     altNames?: string[];

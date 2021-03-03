@@ -1,6 +1,6 @@
 import { CertificateStore } from "./types";
 declare const CertStore: {
-    getStore: () => CertificateStore;
+    getStore: (challengePath: string) => CertificateStore;
     setStore: (store: CertificateStore) => void;
 };
 export default CertStore;

@@ -15,19 +15,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createCertWithWildcardHandler = void 0;
 const certificate_1 = __importDefault(require("../certificate/certificate"));
 const createCert_1 = __importDefault(require("../certificate/createCert"));
-function createCertWithWildcardHandler(req, res, production) {
+function createCertWithWildcardHandler(req, res, production, challengePath) {
     return __awaiter(this, void 0, void 0, function* () {
         let domain = req.query.domain || req.hostname;
-        const exists = certificate_1.default.exists(domain, `key.pem`);
+        const exists = certificate_1.default.exists(challengePath, domain, `key.pem`);
         if (!exists || req.query.force === "true") {
             if (exists) {
-                yield certificate_1.default.remove(domain);
+                yield certificate_1.default.remove(challengePath, domain);
             }
             let challenges = yield createCert_1.default({
                 domain,
                 altNames: [`*.${domain}`],
                 challengeOnly: !req.query.process,
-                production
+                production,
+                challengePath
             });
             challenges ? res.status(200).json({
                 status: 'pending',

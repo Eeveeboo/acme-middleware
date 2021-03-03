@@ -1,2 +1,2 @@
-export declare function createChallenge(clientToken: string, accountToken: string): void;
-export declare function removeChallenge(clientToken: string): void;
+export declare function createChallenge(challengePath: string, clientToken: string, accountToken: string): void;
+export declare function removeChallenge(challengePath: string, clientToken: string): void;

@@ -5,26 +5,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const pathUtils_1 = __importDefault(require("../pathUtils"));
-function remove(domain) {
-    fs_1.default.unlinkSync(pathUtils_1.default(domain, `key.pem`));
-    fs_1.default.unlinkSync(pathUtils_1.default(domain, `cert.pem`));
+function remove(challengePath, domain) {
+    fs_1.default.unlinkSync(pathUtils_1.default(challengePath, domain, `key.pem`));
+    fs_1.default.unlinkSync(pathUtils_1.default(challengePath, domain, `cert.pem`));
 }
-function save(domain, fileName, content) {
-    const dir = pathUtils_1.default(domain);
+function save(challengePath, domain, fileName, content) {
+    const dir = pathUtils_1.default(challengePath, domain);
     if (!fs_1.default.existsSync(dir)) {
         fs_1.default.mkdirSync(dir);
     }
-    fs_1.default.writeFileSync(pathUtils_1.default(domain, fileName), content);
+    fs_1.default.writeFileSync(pathUtils_1.default(challengePath, domain, fileName), content);
 }
-function load(domain, fileName) {
-    const dir = pathUtils_1.default(domain);
+function load(challengePath, domain, fileName) {
+    const dir = pathUtils_1.default(challengePath, domain);
     if (!fs_1.default.existsSync(dir)) {
         fs_1.default.mkdirSync(dir);
     }
-    return fs_1.default.readFileSync(pathUtils_1.default(domain, fileName));
+    return fs_1.default.readFileSync(pathUtils_1.default(challengePath, domain, fileName));
 }
-function exists(domain, fileName) {
-    return fs_1.default.existsSync(pathUtils_1.default(domain, fileName));
+function exists(challengePath, domain, fileName) {
+    return fs_1.default.existsSync(pathUtils_1.default(challengePath, domain, fileName));
 }
 const certificate = {
     save,

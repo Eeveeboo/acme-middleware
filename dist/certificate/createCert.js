@@ -22,7 +22,7 @@ function createCert(opts) {
     return __awaiter(this, void 0, void 0, function* () {
         let { domain, altNames, challengeOnly } = opts;
         let email = opts.email || "sample@notrealdomain.com";
-        const client = yield account_1.getClient(opts.production, email);
+        const client = yield account_1.getClient(opts.challengePath, opts.production, email);
         let identifiers = [{ type: 'dns', value: domain }];
         altNames && (identifiers = identifiers.concat(altNames.map(value => {
             return { type: 'dns', value };
@@ -61,7 +61,7 @@ function createCert(opts) {
             // log("keyAuthorization", keyAuthorization);
             try {
                 /* Satisfy challenge */
-                yield utils_1.challengeCreateFn(authz, challenge, keyAuthorization);
+                yield utils_1.challengeCreateFn(opts.challengePath, authz, challenge, keyAuthorization);
                 /* Verify that challenge is satisfied */
                 yield client.verifyChallenge(authz, challenge);
                 /* Notify ACME provider that challenge is satisfied */
@@ -72,7 +72,7 @@ function createCert(opts) {
             finally {
                 /* Clean up challenge response */
                 try {
-                    yield utils_1.challengeRemoveFn(authz, challenge, keyAuthorization);
+                    yield utils_1.challengeRemoveFn(opts.challengePath, authz, challenge, keyAuthorization);
                 }
                 catch (e) {
                     /**
@@ -91,9 +91,9 @@ function createCert(opts) {
         });
         yield client.finalizeOrder(order, csr);
         const cert = yield client.getCertificate(order);
-        yield certificate_1.default.save(domain, `key.pem`, key);
-        yield certificate_1.default.save(domain, `cert.pem`, cert);
-        yield store_1.default.getStore().insert(domain, utils_2.getFutureDate(90).getTime());
+        yield certificate_1.default.save(opts.challengePath, domain, `key.pem`, key);
+        yield certificate_1.default.save(opts.challengePath, domain, `cert.pem`, cert);
+        yield store_1.default.getStore(opts.challengePath).insert(domain, utils_2.getFutureDate(90).getTime());
     });
 }
 exports.default = createCert;

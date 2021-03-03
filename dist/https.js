@@ -7,7 +7,7 @@ const https_1 = __importDefault(require("https"));
 const tls_1 = __importDefault(require("tls"));
 const loadCert_1 = require("./certificate/loadCert");
 const defaultCert_1 = require("./certificate/defaultCert");
-function createSSLServer(app, cert, production) {
+function createSSLServer(app, cert, production, challengePath) {
     defaultCert_1.checkDefaultCert(cert.localCertPath, cert.localKeyPath);
     const server = https_1.default.createServer({
         SNICallback: (servername, cb) => {
@@ -18,7 +18,7 @@ function createSSLServer(app, cert, production) {
                 }));
                 return;
             }
-            loadCert_1.loadCert(servername, production)
+            loadCert_1.loadCert(challengePath, servername, production)
                 .then(ctx => {
                 cb(null, ctx);
             })

@@ -17,18 +17,18 @@ const tls_1 = __importDefault(require("tls"));
 const createCert_1 = __importDefault(require("./createCert"));
 const certificate_1 = __importDefault(require("./certificate"));
 const domainUtils_1 = require("./domainUtils");
-function loadCert(servername, production, email) {
+function loadCert(challengePath, servername, production, email) {
     return __awaiter(this, void 0, void 0, function* () {
         let domain = domainUtils_1.getDomainName(servername);
-        const exists = certificate_1.default.exists(domain, `key.pem`);
+        const exists = certificate_1.default.exists(challengePath, domain, `key.pem`);
         if (!exists) {
             let altNames;
             servername === domain || servername.indexOf("_init-cert-wildcard") === 0 && (altNames = [`*.${domain}`]);
-            yield createCert_1.default({ production, domain, email, altNames });
+            yield createCert_1.default({ challengePath, production, domain, email, altNames });
         }
         return tls_1.default.createSecureContext({
-            key: certificate_1.default.load(domain, `key.pem`),
-            cert: certificate_1.default.load(domain, `cert.pem`)
+            key: certificate_1.default.load(challengePath, domain, `key.pem`),
+            cert: certificate_1.default.load(challengePath, domain, `cert.pem`)
         });
     });
 }

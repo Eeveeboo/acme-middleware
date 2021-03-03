@@ -70,7 +70,7 @@ export default async function createCert(opts: Props) {
 
     try {
       /* Satisfy challenge */
-      await challengeCreateFn(authz, challenge, keyAuthorization);
+      await challengeCreateFn(opts.challengePath, authz, challenge, keyAuthorization);
 
       /* Verify that challenge is satisfied */
       await client.verifyChallenge(authz, challenge);
@@ -84,7 +84,7 @@ export default async function createCert(opts: Props) {
     finally {
       /* Clean up challenge response */
       try {
-        await challengeRemoveFn(authz, challenge, keyAuthorization);
+        await challengeRemoveFn(opts.challengePath, authz, challenge, keyAuthorization);
       }
       catch (e) {
         /**

@@ -19,9 +19,9 @@ const challengeUtils_1 = require("./challengeUtils");
  * @param {string} keyAuthorization Authorization key
  * @returns {Promise}
  */
-function challengeCreateFn(authz, challenge, keyAuthorization) {
+function challengeCreateFn(challengePath, authz, challenge, keyAuthorization) {
     return __awaiter(this, void 0, void 0, function* () {
-        return challengeUtils_1.createChallenge(challenge.token, keyAuthorization);
+        return challengeUtils_1.createChallenge(challengePath, challenge.token, keyAuthorization);
     });
 }
 exports.challengeCreateFn = challengeCreateFn;
@@ -32,14 +32,14 @@ exports.challengeCreateFn = challengeCreateFn;
  * @param {object} challenge Selected challenge
  * @returns {Promise}
  */
-function challengeRemoveFn(authz, challenge, keyAuthorization) {
+function challengeRemoveFn(challengePath, authz, challenge, keyAuthorization) {
     return __awaiter(this, void 0, void 0, function* () {
         /* Do something here */
         // log(JSON.stringify(authz));
         // log(JSON.stringify(challenge));
         // log(keyAuthorization);
         // console.log("remove", challenge.token);
-        return challengeUtils_1.removeChallenge(challenge.token);
+        return challengeUtils_1.removeChallenge(challengePath, challenge.token);
     });
 }
 exports.challengeRemoveFn = challengeRemoveFn;

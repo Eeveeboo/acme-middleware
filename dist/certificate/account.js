@@ -17,12 +17,12 @@ const acme_client_1 = __importDefault(require("acme-client"));
 const fs_1 = __importDefault(require("fs"));
 const pathUtils_1 = __importDefault(require("../pathUtils"));
 let accountKey;
-function getOrCreateKey() {
+function getOrCreateKey(challengePath) {
     return __awaiter(this, void 0, void 0, function* () {
         if (accountKey) {
             return Promise.resolve(accountKey);
         }
-        const keyPath = pathUtils_1.default("accountKey.pem");
+        const keyPath = pathUtils_1.default(challengePath, "accountKey.pem");
         if (!fs_1.default.existsSync(keyPath)) {
             let strBuff = yield acme_client_1.default.forge.createPrivateKey();
             fs_1.default.writeFileSync(keyPath, strBuff, { encoding: "utf8" });
@@ -34,9 +34,9 @@ function getOrCreateKey() {
         return accountKey;
     });
 }
-function getClient(production, email) {
+function getClient(challengePath, production, email) {
     return __awaiter(this, void 0, void 0, function* () {
-        const accountKey = yield getOrCreateKey();
+        const accountKey = yield getOrCreateKey(challengePath);
         /* Init client */
         const client = new acme_client_1.default.Client({
             directoryUrl: production ? acme_client_1.default.directory.letsencrypt.production : acme_client_1.default.directory.letsencrypt.staging,

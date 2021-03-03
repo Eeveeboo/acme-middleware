@@ -8,8 +8,8 @@ import { createChallenge, removeChallenge } from "./challengeUtils";
  * @param {string} keyAuthorization Authorization key
  * @returns {Promise}
  */
-export async function challengeCreateFn(authz: any, challenge: any, keyAuthorization: any) {
-    return createChallenge(challenge.token, keyAuthorization);
+export async function challengeCreateFn(challengePath:string, authz: any, challenge: any, keyAuthorization: any) {
+    return createChallenge(challengePath, challenge.token, keyAuthorization);
 }
 
 
@@ -21,14 +21,14 @@ export async function challengeCreateFn(authz: any, challenge: any, keyAuthoriza
  * @returns {Promise}
  */
 
-export async function challengeRemoveFn(authz: any, challenge: any, keyAuthorization: any) {
+export async function challengeRemoveFn(challengePath:string, authz: any, challenge: any, keyAuthorization: any) {
     /* Do something here */
     // log(JSON.stringify(authz));
     // log(JSON.stringify(challenge));
     // log(keyAuthorization);
 
     // console.log("remove", challenge.token);
-    return removeChallenge(challenge.token);
+    return removeChallenge(challengePath, challenge.token);
 }
 
 
