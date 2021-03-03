@@ -30,10 +30,12 @@ export class AcmeExpress {
         cert: CertPath,
         challengePath?: string,
         redirectHTTP?: boolean,
-        production?: boolean
+        production?: boolean,
+        domainnames?: string[],
+        firstDomainNameOnly?: boolean
     }) {
         this.app = props.app;
-        this.https = createSSLServer(props.app, props.cert, props.production || false, props.challengePath || ".acme-middleware");
+        this.https = createSSLServer(props.app, props.cert, props.production || false, props.challengePath || ".acme-middleware", props.firstDomainNameOnly === undefined ? true : props.firstDomainNameOnly, props.domainnames);
         this.challengePath = props.challengePath || ".acme-middleware";
         this.redirectHTTP = props.redirectHTTP || false;
 

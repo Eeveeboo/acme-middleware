@@ -25,7 +25,7 @@ class AcmeExpress {
             // this.app.get("/_init-cert-wildcard", createCertWithWildcardHandler);
         };
         this.app = props.app;
-        this.https = https_1.default(props.app, props.cert, props.production || false, props.challengePath || ".acme-middleware");
+        this.https = https_1.default(props.app, props.cert, props.production || false, props.challengePath || ".acme-middleware", props.firstDomainNameOnly === undefined ? true : props.firstDomainNameOnly, props.domainnames);
         this.challengePath = props.challengePath || ".acme-middleware";
         this.redirectHTTP = props.redirectHTTP || false;
         props.store && (store_1.default.setStore(props.store));

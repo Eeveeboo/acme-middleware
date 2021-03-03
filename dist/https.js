@@ -8,13 +8,16 @@ const tls_1 = __importDefault(require("tls"));
 const loadCert_1 = require("./certificate/loadCert");
 const defaultCert_1 = require("./certificate/defaultCert");
 const fs_1 = __importDefault(require("fs"));
-function createSSLServer(app, cert, production, challengePath) {
+function createSSLServer(app, cert, production, challengePath, firstDomainNameOnly, domainnames) {
+    var firstDomainName = "";
     defaultCert_1.checkDefaultCert(cert.localCertPath, cert.localKeyPath);
-    cert.localCertPath = fs_1.default.readFileSync(cert.localCertPath);
-    cert.localKeyPath = fs_1.default.readFileSync(cert.localKeyPath);
+    cert.localCertPath = fs_1.default.readFileSync(cert.localCertPath, "utf8");
+    cert.localKeyPath = fs_1.default.readFileSync(cert.localKeyPath, 'utf8');
     const server = https_1.default.createServer({
         SNICallback: (servername, cb) => {
-            if (servername === "localhost") {
+            if (servername === "localhost" ||
+                (firstDomainNameOnly && firstDomainName && firstDomainName != servername) ||
+                (domainnames && domainnames.indexOf(servername) == -1)) {
                 cb(null, tls_1.default.createSecureContext({
                     cert: cert.localCertPath,
                     key: cert.localKeyPath
@@ -23,6 +26,7 @@ function createSSLServer(app, cert, production, challengePath) {
             }
             loadCert_1.loadCert(challengePath, servername, production)
                 .then(ctx => {
+                firstDomainName = servername;
                 cb(null, ctx);
             })
                 .catch(err => {

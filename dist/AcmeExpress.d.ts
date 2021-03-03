@@ -19,6 +19,8 @@ export declare class AcmeExpress {
         challengePath?: string;
         redirectHTTP?: boolean;
         production?: boolean;
+        domainnames?: string[];
+        firstDomainNameOnly?: boolean;
     });
     private initate;
     getApp(): express.Express;

@@ -16,10 +16,9 @@ exports.loadCert = void 0;
 const tls_1 = __importDefault(require("tls"));
 const createCert_1 = __importDefault(require("./createCert"));
 const certificate_1 = __importDefault(require("./certificate"));
-const domainUtils_1 = require("./domainUtils");
 function loadCert(challengePath, servername, production, email) {
     return __awaiter(this, void 0, void 0, function* () {
-        let domain = domainUtils_1.getDomainName(servername);
+        let domain = servername; //getDomainName(servername);
         const exists = certificate_1.default.exists(challengePath, domain, `key.pem`);
         if (!exists) {
             let altNames;

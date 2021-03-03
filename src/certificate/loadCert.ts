@@ -5,7 +5,7 @@ import { getDomainName } from "./domainUtils";
 
 export async function loadCert(challengePath:string, servername: string, production:boolean, email?: string): Promise<tls.SecureContext> {
 
-    let domain = getDomainName(servername);
+    let domain = servername;//getDomainName(servername);
 
     const exists = certificate.exists(challengePath, domain, `key.pem`);
 
